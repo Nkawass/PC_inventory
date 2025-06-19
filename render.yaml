@@ -2,6 +2,6 @@ services:
   - type: web
     name: pc-inventory
     env: python
+    plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn Inventory Web App:Inventory Web App"
-    autoDeploy: true
+    startCommand: "Inventory Web App.py"
