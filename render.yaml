@@ -1,7 +1,10 @@
 services:
   - type: web
-    name: pc-inventory
+    name: pc-inventory-app
     env: python
-    plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "Inventory Web App.py"
+    startCommand: "gunicorn Inventory Web App:app"
+    autoDeploy: true
+    envVars:
+      - key: FLASK_ENV
+        value: production
