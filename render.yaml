@@ -3,5 +3,5 @@ services:
     name: pc-inventory
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    startCommand: "gunicorn Inventory Web App:Inventory Web App"
     autoDeploy: true
