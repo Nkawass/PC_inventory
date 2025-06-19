@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Techdeal Inventory</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 2rem;
+        }
+        .filter-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        .table-responsive {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="mb-4">Techdeal Inventory Dashboard</h1>
+
+    <form method="GET" class="filter-box">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="manufacturer" placeholder="Manufacturer" value="{{ request.args.get('manufacturer', '') }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="model" placeholder="Model" value="{{ request.args.get('model', '') }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="cpu" placeholder="CPU" value="{{ request.args.get('cpu', '') }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="ram" placeholder="RAM" value="{{ request.args.get('ram', '') }}">
+            </div>
+            
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="serial" placeholder="Serial Number" value="{{ request.args.get('serial', '') }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="issues" placeholder="Issues & GPU" value="{{ request.args.get('issues', '') }}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="supplier" placeholder="Supplier" value="{{ request.args.get('supplier', '') }}">
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-primary" type="submit">Apply Filters</button>
+                <a href="/" class="btn btn-secondary">Clear</a>
+            </div>
+        </div>
+    </form>
+
+    {% if pcs %}
+    <div class="table-responsive">
+     <style>
+  .custom-table th, .custom-table td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px;
+  }
+
+  .custom-table th a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .custom-table th a:hover {
+    text-decoration: underline;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+  }
+
+  .custom-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #343a40;
+    z-index: 10;
+  }
+
+  .custom-table {
+    min-width: 1200px;
+  }
+</style>
+
+<div class="table-wrapper mt-4">
+  <table class="table table-bordered table-hover table-striped custom-table">
+    <thead class="table-dark">
+      <tr>
+        {% for col in ["manufacturer", "serial", "model", "cpu", "ram", "storage", "resolution", "camera", "touch", "issues", "Tracking", "supplier", "timestamp"] %}
+          <th>
+            <a href="?{% for key, val in request.args.items() if key not in ['sort_by', 'sort_order'] %}{{key}}={{val}}&{% endfor %}sort_by={{col}}&sort_order={{'asc' if current_sort != col or current_order == 'desc' else 'desc'}}">
+              {{ col.replace('_', ' ').title() }}
+              {% if current_sort == col %}
+                <span style="font-size: 0.8em;">
+                  {{ '▲' if current_order == 'asc' else '▼' }}
+                </span>
+              {% endif %}
+            </a>
+          </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for pc in pcs %}
+        <tr>
+          <td>{{ pc["manufacturer"] }}</td>
+          <td>{{ pc["serial"] }}</td>
+          <td>{{ pc["model"] }}</td>
+          <td>{{ pc["cpu"] }}</td>
+          <td>{{ pc["ram"] }}</td>
+          <td>{{ pc["storage"] }}</td>
+          <td>{{ pc["resolution"] }}</td>
+          <td>{{ pc["camera"] }}</td>
+          <td>{{ pc["touch"] }}</td>
+          <td>{{ pc["issues"] }}</td>
+          <td>{{ pc["gpu"] }}</td>
+          <td>{{ pc["supplier"] }}</td>
+          <td>{{ pc["timestamp"] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+    </div>
+    {% else %}
+        <p class="text-muted">No records found for your filters.</p>
+    {% endif %}
+
+</body>
+</html>
+
+
+
