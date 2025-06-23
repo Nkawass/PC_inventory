@@ -2,8 +2,8 @@ from flask import Flask, render_template, request
 import sqlite3
 
 app = Flask(__name__)
-DB_PATH = 'pc_info.db'  # Change if your DB is named differently
-
+#DB_PATH = 'pc_info.db'  # Change if your DB is named differently
+DB_PATH= 'db/pcs.db'
 def get_filtered_data(filters, sort_by="timestamp", sort_order="desc"):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -43,6 +43,22 @@ def index():
     sort_order = filters.get("sort_order", "desc")
     pcs = get_filtered_data(filters, sort_by, sort_order)
     return render_template("index.html", pcs=pcs, current_sort=sort_by, current_order=sort_order)
+
+import threading, time, requests
+#1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD
+def update_db_periodically():
+    while True:
+        try:
+            url = "https://drive.google.com/uc?id=1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD"
+            r = requests.get(url)
+            with open("db/pcs.db", "wb") as f:
+                f.write(r.content)
+            print("Database updated.")
+        except Exception as e:
+            print("Update failed:", e)
+        time.sleep(3600)  # every hour
+
+threading.Thread(target=update_db_periodically, daemon=True).start()
 
 
 
