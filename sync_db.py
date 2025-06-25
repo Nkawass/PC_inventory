@@ -1,17 +1,15 @@
-import shutil
-import os
-from datetime import datetime
+import threading, time, requests
+#1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD
+def update_db_periodically():
+    while True:
+        try:
+            url = "https://drive.google.com/uc?id=1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD"
+            r = requests.get(url)
+            with open("db/pcs.db", "wb") as f:
+                f.write(r.content)
+            print("Database updated.")
+        except Exception as e:
+            print("Update failed:", e)
+        time.sleep(3600)  # every hour
 
-# Customize these paths
-SOURCE_DB = "\PycharmProjects\PythonProject\pc_info.db"
-DEST_DB = "\PycharmProjects\Web App\pc_info.db"
-LOG_FILE = "\PycharmProjects\Web App\sync_log.txt"
-
-try:
-    os.makedirs(os.path.dirname(DEST_DB), exist_ok=True)
-    shutil.copy2(SOURCE_DB, DEST_DB)
-    with open(LOG_FILE, "a") as f:
-        f.write(f"{datetime.now()} - DB copied successfully.\n")
-except Exception as e:
-    with open(LOG_FILE, "a") as f:
-        f.write(f"{datetime.now()} - Failed to copy DB: {e}\n")
+threading.Thread(target=update_db_periodically, daemon=True).start()

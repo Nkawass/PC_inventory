@@ -1,5 +1,7 @@
+#Web App
 from flask import Flask, render_template, request
-import sqlite3
+import sqlite3, os
+
 
 app = Flask(__name__)
 #DB_PATH = 'pc_info.db'  # Change if your DB is named differently
@@ -44,13 +46,22 @@ def index():
     pcs = get_filtered_data(filters, sort_by, sort_order)
     return render_template("index.html", pcs=pcs, current_sort=sort_by, current_order=sort_order)
 
+
+
+
 import threading, time, requests
 #1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD
 def update_db_periodically():
     while True:
         try:
-            url = "https://drive.google.com/uc?id=1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD"
+            #url = "https://drive.google.com/uc?id=1v8C7zvn9zUpJgvYPOhMk6CxNvWsSDNFD"
+            url = "https://drive.google.com/uc?id=1vWukuzL09RAWW1aWKdBTlqK8oG-4c51m"
             r = requests.get(url)
+            # ✅ Step 3: Delete old database (if it exists)
+            db_path = "db/pcs.db"
+            if os.path.exists(DB_PATH):
+                os.remove(DB_PATH)
+                print("🗑️ Old database deleted.")
             with open("db/pcs.db", "wb") as f:
                 f.write(r.content)
             print("Database updated.")
