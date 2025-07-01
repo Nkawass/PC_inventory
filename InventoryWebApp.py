@@ -14,13 +14,15 @@ def get_filtered_data(filters, sort_by="timestamp", sort_order="desc"):
     query = "SELECT * FROM pc_info WHERE 1=1"
     params = []
 
-    for field in ["manufacturer", "model", "cpu", "ram", "gpu", "serial", "issues", "supplier"]:
-        value = filters.get(field)
-        if value:   # to match the exact model
-            if field == "model":
-                query += f" AND LOWER({field}) = ?"
-                params.append(value.lower())
-            else:   # for other values
+    for field in ["manufacturer", "model", "cpu", "gpu", "serial", "issues", "supplier","touch"]:
+        if field == "cpu":
+            cpu_values = filters.getlist("cpu")
+            if cpu_values:
+                query += f" AND cpu IN ({','.join('?' * len(cpu_values))})"
+                params.extend(cpu_values)
+        else:
+            value = filters.get(field)
+            if value:
                 query += f" AND {field} LIKE ?"
                 params.append(f"%{value}%")
 
@@ -49,6 +51,39 @@ def get_filtered_data(filters, sort_by="timestamp", sort_order="desc"):
     conn.close()
     return rows
 
+def get_unique_models():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT DISTINCT model FROM pc_info 
+        WHERE model IS NOT NULL AND TRIM(model) != ''
+        ORDER BY model
+    """)
+    models = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return models
+
+def get_unique_cpus(model=None):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    if model:
+        cursor.execute("""
+            SELECT DISTINCT cpu FROM pc_info 
+            WHERE LOWER(model) = LOWER(?) AND cpu IS NOT NULL AND TRIM(cpu) != ''
+            ORDER BY cpu
+        """, (model,))
+    else:
+        cursor.execute("""
+            SELECT DISTINCT cpu FROM pc_info 
+            WHERE cpu IS NOT NULL AND TRIM(cpu) != ''
+            ORDER BY cpu
+        """)
+    cpus = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return cpus
+
+
+
 
 @app.route("/", methods=["GET"])
 def index():
@@ -56,16 +91,19 @@ def index():
     sort_by = filters.get("sort_by", "timestamp")
     sort_order = filters.get("sort_order", "desc")
     page = int(filters.get("page", 1))
-    per_page = 75
+    per_page = 50
+
+    selected_model = filters.get("model", "")
+    cpu_options = get_unique_cpus(selected_model)  # depends on selected model
 
     all_pcs = get_filtered_data(filters, sort_by, sort_order)
     total_records = len(all_pcs)
     total_pages = math.ceil(total_records / per_page)
-
-    # Slice for pagination
     start = (page - 1) * per_page
     end = start + per_page
     pcs = all_pcs[start:end]
+
+    model_options = get_unique_models()
 
     return render_template(
         "index.html",
@@ -73,8 +111,13 @@ def index():
         current_sort=sort_by,
         current_order=sort_order,
         current_page=page,
-        total_pages=total_pages
+        total_pages=total_pages,
+        cpu_options=cpu_options,
+        model_options=model_options
     )
+
+
+
 
 @app.route("/download-csv")
 def download_csv():
