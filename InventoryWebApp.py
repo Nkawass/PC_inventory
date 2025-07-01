@@ -14,14 +14,15 @@ def get_filtered_data(filters, sort_by="timestamp", sort_order="desc"):
     query = "SELECT * FROM pc_info WHERE 1=1"
     params = []
 
-    for field in [
-        "manufacturer", "model", "cpu", "ram", "gpu",
-        "serial", "issues", "supplier"
-    ]:
+    for field in ["manufacturer", "model", "cpu", "ram", "gpu", "serial", "issues", "supplier"]:
         value = filters.get(field)
-        if value:
-            query += f" AND {field} LIKE ?"
-            params.append(f"%{value}%")
+        if value:   # to match the exact model
+            if field == "model":
+                query += f" AND LOWER({field}) = ?"
+                params.append(value.lower())
+            else:   # for other values
+                query += f" AND {field} LIKE ?"
+                params.append(f"%{value}%")
 
     # ✅ Date range filter for timestamp
     start_date = filters.get("start_date")
