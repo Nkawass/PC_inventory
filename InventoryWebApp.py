@@ -20,6 +20,11 @@ def get_filtered_data(filters, sort_by="timestamp", sort_order="desc"):
             if cpu_values:
                 query += f" AND cpu IN ({','.join('?' * len(cpu_values))})"
                 params.extend(cpu_values)
+        elif field == "model":
+            value = filters.get(field)
+            if value:  # ✅ Ensure value is not None or empty
+                query += f" AND LOWER({field}) = ?"
+                params.append(value.lower())
         else:
             value = filters.get(field)
             if value:
