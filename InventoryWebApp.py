@@ -123,7 +123,7 @@ def index():
 
 
 
-
+# to export csv in application
 @app.route("/download-csv")
 def download_csv():
     filters = request.args

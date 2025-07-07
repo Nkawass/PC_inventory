@@ -185,14 +185,22 @@
                     <tr>
                         {% for col in ["manufacturer", "serial", "model", "cpu", "ram", "storage", "resolution", "camera", "touch", "issues", "Tracking", "supplier", "timestamp"] %}
                             <th>
-                                <a href="?{% for key, val in request.args.items() if key not in ['sort_by', 'sort_order'] %}{{key}}={{val}}&{% endfor %}sort_by={{col}}&sort_order={{'asc' if current_sort != col or current_order == 'desc' else 'desc'}}">
-                                    {{ col.replace('_', ' ').title() }}
+								<!-- <a href="?{% for key, val in request.args.items() if key not in ['sort_by', 'sort_order'] %}{{key}}={{val}}&{% endfor %}sort_by={{col}}&sort_order={{'asc' if current_sort != col or current_order == 'desc' else 'desc'}}"> -->
+								<a href="?
+									{% for key, values in request.args.lists() if key not in ['sort_by', 'sort_order'] %}
+									{% for val in values %}
+									{{ key }}={{ val | urlencode }}&
+									{% endfor %}
+									{% endfor %}
+									sort_by={{ col }}&sort_order={{ 'asc' if current_sort != col or current_order == 'desc' else 'desc' }}">
+
+                                  {{ col.replace('_', ' ').title() }}
                                     {% if current_sort == col %}
                                         <span style="font-size: 0.8em;">
                                             {{ '▲' if current_order == 'asc' else '▼' }}
                                         </span>
                                     {% endif %}
-                                </a>
+                                </a>  
                             </th>
                         {% endfor %}
                     </tr>
