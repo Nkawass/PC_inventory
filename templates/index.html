@@ -7,48 +7,110 @@
     <meta charset="UTF-8">
     <title>Techdeal Inventory</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            padding: 2rem;
-        }
-        .filter-box {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-        .table-responsive {
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        .custom-table th, .custom-table td {
-            vertical-align: middle;
-            text-align: center;
-            padding: 12px;
-        }
-        .custom-table th a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .custom-table th a:hover {
-            text-decoration: underline;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        .custom-table thead th {
-            position: sticky;
-            top: 0;
-            background-color: #343a40;
-            z-index: 10;
-        }
-        .custom-table {
-            min-width: 1200px;
-        }
-    </style>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+        padding: 2rem;
+        background-color: #f4f6f8;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-weight: 600;
+    }
+
+    .filter-box {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        margin-bottom: 2.5rem;
+    }
+
+    .table-wrapper {
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+    }
+
+    .table-responsive {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .custom-table {
+        min-width: 1200px;
+    }
+
+    .custom-table thead th {
+        background-color: #343a40;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.95rem;
+        padding: 14px;
+    }
+
+    .custom-table th a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .custom-table td {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .pagination .page-link {
+        border-radius: 6px;
+        padding: 8px 12px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .selectpicker, .form-select, .form-control {
+        border-radius: 8px;
+    }
+
+    /* Scrollbar styling */
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background-color: rgba(52, 58, 64, 0.3);
+        border-radius: 4px;
+    }
+</style>
+
+
+
+
+
 	
 	<script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -65,125 +127,157 @@
 <body>
     <!-- Logo and Title -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Techdeal Inventory Dashboard</h1>
+       <h1 class="mb-0">Techdeal Inventory Dashboard</h1>
+    <div>
         <img src="/static/logo.png" alt="Logo" style="height: 120px;">
+    </div>
+    <div>
+        <a href="/" class="btn btn-outline-primary me-2">Inventory</a>
+        <a href="/alternate" class="btn btn-outline-secondary">Shipped</a>
 
     </div>
+	
+	
+   
+  
+</div>
 
-    <!-- Filter Form -->
-   <form method="GET" class="filter-box">
-  <div class="mb-4">
-    <h5 class="mb-3 text-primary">🔍 Filter by Device Details</h5>
-    <div class="row g-3">
 
-      <!-- Manufacturer -->
-      <div class="col-md-3">
-        <label class="form-label">Manufacturer</label>
-        <input type="text" class="form-control" name="manufacturer"
-               placeholder="e.g. Lenovo" value="{{ request.args.get('manufacturer', '') }}">
-      </div>
+   <!-- Filter Form -->
+<!-- Filter Form -->
+<form method="GET" class="filter-box">
 
-      <!-- Model with autocomplete -->
-      <div class="col-md-3">
-        <label class="form-label">Model</label>
-        <input type="text" class="form-control" name="model" list="modelOptions"
-               placeholder="e.g. T490" value="{{ request.args.get('model', '') }}">
-        <datalist id="modelOptions">
-          {% for model in model_options %}
-            <option value="{{ model }}">
-          {% endfor %}
-        </datalist>
-      </div>
 
-      
-      <!-- Touch -->
-	<div class="col-md-3">
-	<label class="form-label">Touch</label>
-	<select class="form-select" name="touch">
+  <!-- 🔍 Device Filters -->
+<div class="mb-4">
+  <h5 class="mb-3 text-primary">🔍 Filter by Device Details</h5>
+  <div class="row g-3">
+
+    <!-- Manufacturer -->
+    <div class="col-md-3">
+      <label class="form-label">Manufacturer</label>
+      <input type="text" class="form-control" name="manufacturer" placeholder="e.g. Lenovo"
+             value="{{ request.args.get('manufacturer', '') }}">
+    </div>
+
+    <!-- Model -->
+    <div class="col-md-3">
+      <label class="form-label">Model</label>
+      <input type="text" class="form-control" name="model" list="modelOptions" placeholder="e.g. T490"
+             value="{{ request.args.get('model', '') }}">
+      <datalist id="modelOptions">
+        {% for model in model_options %}
+          <option value="{{ model }}">
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <!-- Touch -->
+    <div class="col-md-3">
+      <label class="form-label">Touch</label>
+      <select class="form-select" name="touch">
+        <option value="">All</option>
+        <option value="Yes" {% if request.args.get('touch') == 'Yes' %}selected{% endif %}>Touch</option>
+        <option value="No" {% if request.args.get('touch') == 'No' %}selected{% endif %}>Non-Touch</option>
+      </select>
+    </div>
+
+    <!-- Serial -->
+    <div class="col-md-3">
+      <label class="form-label">Serial #</label>
+      <input type="text" class="form-control" name="serial" placeholder="Serial Number"
+             value="{{ request.args.get('serial', '') }}">
+    </div>
+
+    <!-- CPU -->
+<div class="col-md-3">
+  <label class="form-label">CPU</label>
+  <select class="selectpicker" name="cpu" multiple data-live-search="true"
+          data-actions-box="true" title="Select CPUs">
+    {% for option in cpu_options %}
+      <option value="{{ option }}" {% if option in request.args.getlist('cpu') %}selected{% endif %}>
+        {{ option }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
+
+<!-- Supplier -->
+<div class="col-md-3">
+  <label class="form-label">Supplier</label>
+  <input type="text" class="form-control" name="supplier" placeholder="Supplier name"
+         value="{{ request.args.get('supplier', '') }}">
+</div>
+
+<!-- Resolution -->
+<div class="col-md-3">
+  <label class="form-label">Resolution</label>
+  <select class="form-select" name="resolution">
     <option value="">All</option>
-    <option value="Yes" {% if request.args.get('touch') == 'Yes' %}selected{% endif %}>Touch</option>
-    <option value="No" {% if request.args.get('touch') == 'No' %}selected{% endif %}>Non-Touch</option>
-	</select>
-	</div>
+    {% for option in resolution_options %}
+      <option value="{{ option }}" {% if request.args.get('resolution') == option %}selected{% endif %}>
+        {{ option }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
 
-
-      <!-- Serial -->
-      <div class="col-md-3">
-        <label class="form-label">Serial #</label>
-        <input type="text" class="form-control" name="serial"
-               placeholder="Serial Number" value="{{ request.args.get('serial', '') }}">
-      </div>
-
-      <!-- CPU Multi-select -->
-      <div class="col-md-6">
-        <label class="form-label">CPU</label>
-        <select class="selectpicker" name="cpu" multiple data-live-search="true"
-                data-actions-box="true" title="Select CPUs">
-          {% for option in cpu_options %}
-            <option value="{{ option }}" {% if option in request.args.getlist('cpu') %}selected{% endif %}>
-              {{ option }}
-            </option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <!-- Issues/GPU -->
-      <div class="col-md-3">
-        <label class="form-label">Issues & GPU</label>
-        <input type="text" class="form-control" name="issues"
-               placeholder="e.g. Screen, Palm rest" value="{{ request.args.get('issues', '') }}">
-      </div>
-
-      <!-- Supplier -->
-      <div class="col-md-3">
-        <label class="form-label">Supplier</label>
-        <input type="text" class="form-control" name="supplier"
-               placeholder="Supplier name" value="{{ request.args.get('supplier', '') }}">
-      </div>
-
+    <!-- Issues / GPU -->
+    <div class="col-md-3">
+      <label class="form-label">Issues & GPU</label>
+      <input type="text" class="form-control" name="issues" placeholder="e.g. Screen, GPU"
+             value="{{ request.args.get('issues', '') }}">
     </div>
-  </div>
 
+  </div>
+</div>
+
+
+  <!-- 🗓️ Date Filter -->
   <div class="mb-4">
     <h5 class="mb-3 text-primary">🗓️ Filter by Date</h5>
     <div class="row g-3">
-      <!-- Start Date -->
       <div class="col-md-3">
         <label class="form-label">Start Date</label>
-        <input type="date" class="form-control" name="start_date"
-               value="{{ request.args.get('start_date', '') }}">
+        <input type="date" class="form-control" name="start_date" value="{{ request.args.get('start_date', '') }}">
       </div>
-
-      <!-- End Date -->
       <div class="col-md-3">
         <label class="form-label">End Date</label>
-        <input type="date" class="form-control" name="end_date"
-               value="{{ request.args.get('end_date', '') }}">
+        <input type="date" class="form-control" name="end_date" value="{{ request.args.get('end_date', '') }}">
       </div>
     </div>
   </div>
 
+   <!-- 🔘 Action Buttons -->
   <div class="d-flex gap-3">
     <button type="submit" class="btn btn-primary">🔎 Apply Filters</button>
     <a href="/" class="btn btn-secondary">Reset</a>
   </div>
-</form>
+
+      
+    </form>
+  </div>
+</div>
 
 
-    {% if pcs %}
+<!-- ✅ Results Summary & Export -->
+{% if pcs %}
     <!-- Export Button & Row Count -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <p class="text-muted mb-0">Showing {{ pcs|length }} Laptop{{ 's' if pcs|length != 1 else '' }}</p>
         <a href="/download-csv?{{ request.query_string.decode('utf-8') }}" class="btn btn-success">Export to CSV</a>
     </div>
 
+
+
     <!-- Table -->
-    <div class="table-wrapper mt-3">
+<div class="table-wrapper mt-3">
+
         <div class="table-responsive">
             <table class="table table-bordered table-hover table-striped custom-table">
                 <thead class="table-dark">
                     <tr>
-                        {% for col in ["manufacturer", "serial", "model", "cpu", "ram", "storage", "resolution", "camera", "touch", "issues", "Tracking", "supplier", "timestamp"] %}
+                        {% for col in ["manufacturer", "serial", "model", "cpu", "ram", "storage", "resolution", "camera", "touch", "issues", "Receiving_Emp", "supplier", "timestamp" , "QTY"] %}
                             <th>
 								<!-- <a href="?{% for key, val in request.args.items() if key not in ['sort_by', 'sort_order'] %}{{key}}={{val}}&{% endfor %}sort_by={{col}}&sort_order={{'asc' if current_sort != col or current_order == 'desc' else 'desc'}}"> -->
 								<a href="?
@@ -196,9 +290,11 @@
 
                                   {{ col.replace('_', ' ').title() }}
                                     {% if current_sort == col %}
-                                        <span style="font-size: 0.8em;">
+										 <i class="fas fa-sort-{{ 'up' if current_order == 'asc' else 'down' }}"></i>
+									
+                                       <!-- <span style="font-size: 0.8em;">
                                             {{ '▲' if current_order == 'asc' else '▼' }}
-                                        </span>
+                                        </span> -->
                                     {% endif %}
                                 </a>  
                             </th>
@@ -221,16 +317,20 @@
                             <td>{{ pc["gpu"] }}</td>
                             <td>{{ pc["supplier"] }}</td>
                             <td>{{ pc["timestamp"] }}</td>
+							<td>{{ pc["QTY"] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-    </div>
+            </div> <!-- end table-responsive -->
+  </div> <!-- end table-wrapper -->
+
+
 
     <!-- Pagination -->
+	<div class="card-footer">
     <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center mt-4">
+      <ul class="pagination justify-content-center mt-3 mb-0"">
         {% if current_page > 1 %}
           <li class="page-item">
             <a class="page-link" href="?page={{ current_page - 1 }}&{{ request.query_string|replace('page=' ~ current_page, '') }}" aria-label="Previous">&laquo;</a>
@@ -248,6 +348,7 @@
         {% endif %}
       </ul>
     </nav>
+	</div>
 
     {% else %}
         <p class="text-muted">No records found for your filters.</p>
