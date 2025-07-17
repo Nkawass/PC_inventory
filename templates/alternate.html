@@ -225,25 +225,49 @@
 </div>
 
 <!-- Pagination -->
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center mt-4">
-        {% if current_page > 1 %}
+<!-- Pagination -->
+<div class="card-footer">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-3 mb-0">
+
+      {% set base_query = request.args.to_dict() %}
+      {% set base_query_no_page = base_query.copy() %}
+      {% if 'page' in base_query_no_page %}
+        {% set _ = base_query_no_page.pop('page') %}
+      {% endif %}
+
+      {# Previous Page #}
+      {% if current_page > 1 %}
+        {% set prev_query = base_query_no_page.copy() %}
+        {% set _ = prev_query.update({'page': current_page - 1}) %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ current_page - 1 }}&{{ request.query_string|replace('page=' ~ current_page, '') }}" aria-label="Previous">&laquo;</a>
+          <a class="page-link" href="?{{ prev_query | urlencode }}" aria-label="Previous">&laquo;</a>
         </li>
-        {% endif %}
-        {% for page_num in range(1, total_pages + 1) %}
+      {% endif %}
+
+      {# Page Numbers #}
+      {% for page_num in range(1, total_pages + 1) %}
+        {% set page_query = base_query_no_page.copy() %}
+        {% set _ = page_query.update({'page': page_num}) %}
         <li class="page-item {% if page_num == current_page %}active{% endif %}">
-            <a class="page-link" href="?page={{ page_num }}&{{ request.query_string|replace('page=' ~ current_page, '') }}">{{ page_num }}</a>
+          <a class="page-link" href="?{{ page_query | urlencode }}">{{ page_num }}</a>
         </li>
-        {% endfor %}
-        {% if current_page < total_pages %}
+      {% endfor %}
+
+      {# Next Page #}
+      {% if current_page < total_pages %}
+        {% set next_query = base_query_no_page.copy() %}
+        {% set _ = next_query.update({'page': current_page + 1}) %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ current_page + 1 }}&{{ request.query_string|replace('page=' ~ current_page, '') }}" aria-label="Next">&raquo;</a>
+          <a class="page-link" href="?{{ next_query | urlencode }}" aria-label="Next">&raquo;</a>
         </li>
-        {% endif %}
+      {% endif %}
+
     </ul>
-</nav>
+  </nav>
+</div>
+
+
 {% else %}
 <p class="text-muted">No records found for your filters.</p>
 {% endif %}
