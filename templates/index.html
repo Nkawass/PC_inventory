@@ -302,25 +302,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for pc in pcs %}
-                        <tr>
-                            <td>{{ pc["manufacturer"] }}</td>
-                            <td>{{ pc["serial"] }}</td>
-                            <td>{{ pc["model"] }}</td>
-                            <td>{{ pc["cpu"] }}</td>
-                            <td>{{ pc["ram"] }}</td>
-                            <td>{{ pc["storage"] }}</td>
-                            <td>{{ pc["resolution"] }}</td>
-                            <td>{{ pc["camera"] }}</td>
-                            <td>{{ pc["touch"] }}</td>
-                            <td>{{ pc["issues"] }}</td>
-                            <td>{{ pc["gpu"] }}</td>
-                            <td>{{ pc["supplier"] }}</td>
-                            <td>{{ pc["timestamp"] }}</td>
-							<td>{{ pc["QTY"] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+					{% for pc in pcs %}
+					<tr {% if pc["QTY"] and pc["QTY"]|int >= 1 %} class="table-success" {% endif %}>
+					  <td>{{ pc["manufacturer"] }}</td>
+					  <td>{{ pc["serial"] }}</td>
+					  <td>{{ pc["model"] }}</td>
+					  <td>{{ pc["cpu"] }}</td>
+					  <td>{{ pc["ram"] }}</td>
+					  <td>{{ pc["storage"] }}</td>
+					  <td>{{ pc["resolution"] }}</td>
+					  <td>{{ pc["camera"] }}</td>
+					  <td>{{ pc["touch"] }}</td>
+					  <td>{{ pc["issues"] }}</td>
+					  <td>{{ pc["gpu"] }}</td>
+					  <td>{{ pc["supplier"] }}</td>
+					  <td>{{ pc["timestamp"] }}</td>
+					  <td>{{ pc["QTY"] }}</td>
+					</tr>
+				  {% endfor %}
+				</tbody>
+
             </table>
             </div> <!-- end table-responsive -->
   </div> <!-- end table-wrapper -->
