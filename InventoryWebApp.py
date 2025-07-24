@@ -185,7 +185,7 @@ def index():
         total_pages=total_pages,
         cpu_options=cpu_options,
                            model_options=model_options,
-                           resolution_options=resolution_options)
+                           resolution_options=resolution_options, total_records=total_records)
 
 
 

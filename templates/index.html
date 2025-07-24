@@ -264,7 +264,8 @@
 {% if pcs %}
     <!-- Export Button & Row Count -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <p class="text-muted mb-0">Showing {{ pcs|length }} Laptop{{ 's' if pcs|length != 1 else '' }}</p>
+        <p class="text-muted mb-0"> Showing {{ pcs|length }} of {{ total_records }} Laptop{{ 's' if total_records != 1 else '' }} matching filters </p>
+
         <a href="/download-csv?{{ request.query_string.decode('utf-8') }}" class="btn btn-success">Export to CSV</a>
     </div>
 
