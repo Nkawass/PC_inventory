@@ -1,391 +1,804 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- Bootstrap-Select CSS -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-
     <meta charset="UTF-8">
-    <title>Techdeal Inventory</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
-   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-    body {
-        font-family: 'Inter', sans-serif;
-        padding: 2rem;
-        background-color: #f4f6f8;
-        font-size: 16px;
-    }
-
-    h1 {
-        font-weight: 600;
-    }
-
-    .filter-box {
-        background: #ffffff;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        margin-bottom: 2.5rem;
-    }
-
-    .table-wrapper {
-        background: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        overflow-x: auto;
-    }
-
-    .table-responsive {
-        max-height: 70vh;
-        overflow-y: auto;
-    }
-
-    .custom-table {
-        min-width: 1200px;
-    }
-
-    .custom-table thead th {
-        background-color: #343a40;
-        color: white;
-        position: sticky;
-        top: 0;
-        z-index: 5;
-        vertical-align: middle;
-        text-align: center;
-        font-size: 0.95rem;
-        padding: 14px;
-    }
-
-    .custom-table th a {
-        color: white;
-        text-decoration: none;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .custom-table td {
-        vertical-align: middle;
-        text-align: center;
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .btn {
-        border-radius: 8px;
-        font-weight: 500;
-    }
-
-    .pagination .page-link {
-        border-radius: 6px;
-        padding: 8px 12px;
-    }
-
-    .form-label {
-        font-weight: 500;
-        font-size: 0.95rem;
-    }
-
-    .selectpicker, .form-select, .form-control {
-        border-radius: 8px;
-    }
-
-    /* Scrollbar styling */
-    .table-responsive::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .table-responsive::-webkit-scrollbar-thumb {
-        background-color: rgba(52, 58, 64, 0.3);
-        border-radius: 4px;
-    }
-</style>
-
-
-
-
-
-	
-	<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const modelInput = document.querySelector("input[name='model']");
-        if (modelInput) {
-            modelInput.addEventListener("change", function() {
-                this.form.submit(); // Auto-submit when model changes
-            });
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techdeal Inventory Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Select CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #059669;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
         }
-    });
-</script>
 
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Header Styles */
+        .header-section {
+            background: #ffffff;
+            color: var(--text-primary);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .logo-container:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .logo-container img {
+            height: 65px;
+            width: auto;
+            max-width: 200px;
+            object-fit: contain;
+        }
+
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .company-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            letter-spacing: -0.025em;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: 0.025em;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .nav-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .filter-header {
+            background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-content {
+            padding: 2rem;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-outline-secondary {
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            background: white;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #f8fafc;
+            border-color: var(--secondary-color);
+        }
+
+        /* Results Section */
+        .results-section {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .results-count {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Table Improvements */
+        .table-container {
+            overflow-x: auto;
+            max-height: 70vh;
+        }
+
+        .custom-table {
+            margin: 0;
+            width: 100%;
+            font-size: 0.8125rem;
+        }
+
+        .custom-table thead th {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 1rem 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            border: 1px solid #4b5563;
+        }
+
+        .custom-table th a {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .custom-table th a:hover {
+            color: #bfdbfe;
+        }
+
+        .custom-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #f8fafc;
+            transform: scale(1.001);
+        }
+
+        .custom-table td {
+            padding: 0.875rem 0.75rem;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .table-success {
+            background-color: #dcfce7 !important;
+        }
+
+        .table-success:hover {
+            background-color: #bbf7d0 !important;
+        }
+
+        /* Pagination */
+        .pagination-wrapper {
+            padding: 1.5rem 2rem;
+            background: #f8fafc;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pagination {
+            margin: 0;
+            gap: 0.25rem;
+        }
+
+        .page-link {
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .page-link:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-unavailable {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Scrollbar Styling */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Loading State */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .filter-content {
+                padding: 1.5rem;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .nav-buttons {
+                justify-content: center;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <!-- Logo and Title -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-       <h1 class="mb-0">Techdeal Inventory Dashboard</h1>
-    <div>
-        <img src="/static/logo.png" alt="Logo" style="height: 120px;">
-    </div>
-    <div>
-        <a href="/" class="btn btn-outline-primary me-2">Inventory</a>
-        <a href="/alternate" class="btn btn-outline-secondary">Shipped</a>
+    <!-- Header Section -->
+    <header class="header-section">
+        <div class="container-fluid px-4">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <img src="/static/logo.png" alt="Techdeal Logo">
+                    </div>
+                    <div class="brand-info">
+                        <p class="company-name">TECHDEAL</p>
+                        <h1 class="header-title">Inventory Dashboard</h1>
+                    </div>
+                </div>
+                <nav class="nav-buttons">
+                    <a href="/" class="nav-btn active">
+                        <i class="fas fa-laptop"></i>
+                        Inventory
+                    </a>
+                    <a href="/alternate" class="nav-btn">
+                        <i class="fas fa-shipping-fast"></i>
+                        Shipped
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-    </div>
-	
-	
-   
-  
-</div>
+    <div class="container-fluid px-4">
+        <!-- Filter Section -->
+        <section class="filter-section fade-in">
+            <div class="filter-header">
+                <h2>
+                    <i class="fas fa-filter"></i>
+                    Advanced Filters
+                </h2>
+            </div>
+            
+            <form method="GET" class="filter-content">
+                <!-- Device Details -->
+                <div class="filter-group">
+                    <h3 class="filter-group-title">
+                        <i class="fas fa-laptop"></i>
+                        Device Details
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Manufacturer</label>
+                            <input type="text" class="form-control" name="manufacturer" 
+                                   placeholder="e.g. Lenovo" value="{{ request.args.get('manufacturer', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Model</label>
+                            <input type="text" class="form-control" name="model" list="modelOptions" 
+                                   placeholder="e.g. T490" value="{{ request.args.get('model', '') }}">
+                            <datalist id="modelOptions">
+                                {% for model in model_options %}
+                                    <option value="{{ model }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Touch Screen</label>
+                            <select class="form-select" name="touch">
+                                <option value="">All Types</option>
+                                <option value="Yes" {% if request.args.get('touch') == 'Yes' %}selected{% endif %}>Touch</option>
+                                <option value="No" {% if request.args.get('touch') == 'No' %}selected{% endif %}>Non-Touch</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Serial Number</label>
+                            <input type="text" class="form-control" name="serial" 
+                                   placeholder="Enter serial number" value="{{ request.args.get('serial', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">CPU</label>
+                            <select class="selectpicker" name="cpu" multiple data-live-search="true"
+                                    data-actions-box="true" title="Select processors">
+                                {% for option in cpu_options %}
+                                    <option value="{{ option }}" {% if option in request.args.getlist('cpu') %}selected{% endif %}>
+                                        {{ option }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Supplier</label>
+                            <input type="text" class="form-control" name="supplier" 
+                                   placeholder="Supplier name" value="{{ request.args.get('supplier', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Resolution</label>
+                            <select class="form-select" name="resolution">
+                                <option value="">All Resolutions</option>
+                                {% for option in resolution_options %}
+                                    <option value="{{ option }}" {% if request.args.get('resolution') == option %}selected{% endif %}>
+                                        {{ option }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Issues & GPU</label>
+                            <input type="text" class="form-control" name="issues" 
+                                   placeholder="e.g. Screen issues, GPU type" value="{{ request.args.get('issues', '') }}">
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Date Filters -->
+                <div class="filter-group">
+                    <h3 class="filter-group-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        Date Range
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" name="start_date" 
+                                   value="{{ request.args.get('start_date', '') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">End Date</label>
+                            <input type="date" class="form-control" name="end_date" 
+                                   value="{{ request.args.get('end_date', '') }}">
+                        </div>
+                    </div>
+                </div>
 
-   <!-- Filter Form -->
-<!-- Filter Form -->
-<form method="GET" class="filter-box">
+                <!-- Action Buttons -->
+                <div class="d-flex gap-3 flex-wrap">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                        Apply Filters
+                    </button>
+                    <a href="/" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo"></i>
+                        Reset Filters
+                    </a>
+                </div>
+            </form>
+        </section>
 
+        <!-- Results Section -->
+        {% if pcs %}
+        <section class="results-section fade-in">
+            <div class="results-header">
+                <p class="results-count">
+                    <i class="fas fa-info-circle"></i>
+                    Showing {{ pcs|length }} of {{ total_records }} laptop{{ 's' if total_records != 1 else '' }} matching your criteria
+                </p>
+                <a href="/download-csv?{{ request.query_string.decode('utf-8') }}" class="btn btn-success">
+                    <i class="fas fa-download"></i>
+                    Export CSV
+                </a>
+            </div>
 
-  <!-- 🔍 Device Filters -->
-<div class="mb-4">
-  <h5 class="mb-3 text-primary">🔍 Filter by Device Details</h5>
-  <div class="row g-3">
-
-    <!-- Manufacturer -->
-    <div class="col-md-3">
-      <label class="form-label">Manufacturer</label>
-      <input type="text" class="form-control" name="manufacturer" placeholder="e.g. Lenovo"
-             value="{{ request.args.get('manufacturer', '') }}">
-    </div>
-
-    <!-- Model -->
-    <div class="col-md-3">
-      <label class="form-label">Model</label>
-      <input type="text" class="form-control" name="model" list="modelOptions" placeholder="e.g. T490"
-             value="{{ request.args.get('model', '') }}">
-      <datalist id="modelOptions">
-        {% for model in model_options %}
-          <option value="{{ model }}">
-        {% endfor %}
-      </datalist>
-    </div>
-
-    <!-- Touch -->
-    <div class="col-md-3">
-      <label class="form-label">Touch</label>
-      <select class="form-select" name="touch">
-        <option value="">All</option>
-        <option value="Yes" {% if request.args.get('touch') == 'Yes' %}selected{% endif %}>Touch</option>
-        <option value="No" {% if request.args.get('touch') == 'No' %}selected{% endif %}>Non-Touch</option>
-      </select>
-    </div>
-
-    <!-- Serial -->
-    <div class="col-md-3">
-      <label class="form-label">Serial #</label>
-      <input type="text" class="form-control" name="serial" placeholder="Serial Number"
-             value="{{ request.args.get('serial', '') }}">
-    </div>
-
-    <!-- CPU -->
-<div class="col-md-3">
-  <label class="form-label">CPU</label>
-  <select class="selectpicker" name="cpu" multiple data-live-search="true"
-          data-actions-box="true" title="Select CPUs">
-    {% for option in cpu_options %}
-      <option value="{{ option }}" {% if option in request.args.getlist('cpu') %}selected{% endif %}>
-        {{ option }}
-      </option>
-    {% endfor %}
-  </select>
-</div>
-
-<!-- Supplier -->
-<div class="col-md-3">
-  <label class="form-label">Supplier</label>
-  <input type="text" class="form-control" name="supplier" placeholder="Supplier name"
-         value="{{ request.args.get('supplier', '') }}">
-</div>
-
-<!-- Resolution -->
-<div class="col-md-3">
-  <label class="form-label">Resolution</label>
-  <select class="form-select" name="resolution">
-    <option value="">All</option>
-    {% for option in resolution_options %}
-      <option value="{{ option }}" {% if request.args.get('resolution') == option %}selected{% endif %}>
-        {{ option }}
-      </option>
-    {% endfor %}
-  </select>
-</div>
-
-    <!-- Issues / GPU -->
-    <div class="col-md-3">
-      <label class="form-label">Issues & GPU</label>
-      <input type="text" class="form-control" name="issues" placeholder="e.g. Screen, GPU"
-             value="{{ request.args.get('issues', '') }}">
-    </div>
-
-  </div>
-</div>
-
-
-  <!-- 🗓️ Date Filter -->
-  <div class="mb-4">
-    <h5 class="mb-3 text-primary">🗓️ Filter by Date</h5>
-    <div class="row g-3">
-      <div class="col-md-3">
-        <label class="form-label">Start Date</label>
-        <input type="date" class="form-control" name="start_date" value="{{ request.args.get('start_date', '') }}">
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">End Date</label>
-        <input type="date" class="form-control" name="end_date" value="{{ request.args.get('end_date', '') }}">
-      </div>
-    </div>
-  </div>
-
-   <!-- 🔘 Action Buttons -->
-  <div class="d-flex gap-3">
-    <button type="submit" class="btn btn-primary">🔎 Apply Filters</button>
-    <a href="/" class="btn btn-secondary">Reset</a>
-  </div>
-
-      
-    </form>
-  </div>
-</div>
-
-
-<!-- ✅ Results Summary & Export -->
-{% if pcs %}
-    <!-- Export Button & Row Count -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <p class="text-muted mb-0"> Showing {{ pcs|length }} of {{ total_records }} Laptop{{ 's' if total_records != 1 else '' }} matching filters </p>
-
-        <a href="/download-csv?{{ request.query_string.decode('utf-8') }}" class="btn btn-success">Export to CSV</a>
-    </div>
-
-
-
-    <!-- Table -->
-<div class="table-wrapper mt-3">
-
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped custom-table">
-                <thead class="table-dark">
-                    <tr>
-                        {% for col in ["manufacturer", "serial", "model", "cpu", "ram", "storage", "resolution", "camera", "touch", "issues", "Receiving_Emp", "supplier", "timestamp" , "QTY"] %}
-                            <th>
-								<!-- <a href="?{% for key, val in request.args.items() if key not in ['sort_by', 'sort_order'] %}{{key}}={{val}}&{% endfor %}sort_by={{col}}&sort_order={{'asc' if current_sort != col or current_order == 'desc' else 'desc'}}"> -->
-								<a href="?
-									{% for key, values in request.args.lists() if key not in ['sort_by', 'sort_order'] %}
-									{% for val in values %}
-									{{ key }}={{ val | urlencode }}&
-									{% endfor %}
-									{% endfor %}
-									sort_by={{ col }}&sort_order={{ 'asc' if current_sort != col or current_order == 'desc' else 'desc' }}">
-
-                                  {{ col.replace('_', ' ').title() }}
-                                    {% if current_sort == col %}
-										 <i class="fas fa-sort-{{ 'up' if current_order == 'asc' else 'down' }}"></i>
-									
-                                       <!-- <span style="font-size: 0.8em;">
-                                            {{ '▲' if current_order == 'asc' else '▼' }}
-                                        </span> -->
-                                    {% endif %}
-                                </a>  
-                            </th>
+            <div class="table-container">
+                <table class="table table-hover custom-table">
+                    <thead>
+                        <tr>
+                            {% for col in ["manufacturer", "serial", "model", "cpu", "ram", "storage", "resolution", "camera", "touch", "issues", "Receiving_Emp", "supplier", "timestamp", "QTY"] %}
+                                <th>
+                                    <a href="?{% for key, values in request.args.lists() if key not in ['sort_by', 'sort_order'] %}{% for val in values %}{{ key }}={{ val | urlencode }}&{% endfor %}{% endfor %}sort_by={{ col }}&sort_order={{ 'asc' if current_sort != col or current_order == 'desc' else 'desc' }}">
+                                        {{ col.replace('_', ' ').title() }}
+                                        {% if current_sort == col %}
+                                            <i class="fas fa-sort-{{ 'up' if current_order == 'asc' else 'down' }}"></i>
+                                        {% else %}
+                                            <i class="fas fa-sort" style="opacity: 0.3;"></i>
+                                        {% endif %}
+                                    </a>
+                                </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pc in pcs %}
+                        <tr {% if pc["QTY"] and pc["QTY"]|int >= 1 %}class="table-success"{% endif %}>
+                            <td>{{ pc["manufacturer"] }}</td>
+                            <td>{{ pc["serial"] }}</td>
+                            <td>{{ pc["model"] }}</td>
+                            <td>{{ pc["cpu"] }}</td>
+                            <td>{{ pc["ram"] }}</td>
+                            <td>{{ pc["storage"] }}</td>
+                            <td>{{ pc["resolution"] }}</td>
+                            <td>{{ pc["camera"] }}</td>
+                            <td>
+                                {% if pc["touch"] == "Yes" %}
+                                    <span class="status-indicator status-available">
+                                        <i class="fas fa-hand-pointer"></i>
+                                        Touch
+                                    </span>
+                                {% else %}
+                                    <span class="status-indicator status-unavailable">
+                                        <i class="fas fa-mouse"></i>
+                                        Non-Touch
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>{{ pc["issues"] }}</td>
+                            <td>{{ pc["Receiving_Emp"] }}</td>
+                            <td>{{ pc["supplier"] }}</td>
+                            <td>{{ pc["timestamp"] }}</td>
+                            <td>
+                                {% if pc["QTY"] and pc["QTY"]|int >= 1 %}
+                                    <span class="status-indicator status-available">
+                                        <i class="fas fa-check-circle"></i>
+                                        {{ pc["QTY"] }}
+                                    </span>
+                                {% else %}
+                                    <span class="status-indicator status-available">
+                                        <i class="fas fa-check-circle"></i>
+                                        1
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
                         {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-					{% for pc in pcs %}
-					<tr {% if pc["QTY"] and pc["QTY"]|int >= 1 %} class="table-success" {% endif %}>
-					  <td>{{ pc["manufacturer"] }}</td>
-					  <td>{{ pc["serial"] }}</td>
-					  <td>{{ pc["model"] }}</td>
-					  <td>{{ pc["cpu"] }}</td>
-					  <td>{{ pc["ram"] }}</td>
-					  <td>{{ pc["storage"] }}</td>
-					  <td>{{ pc["resolution"] }}</td>
-					  <td>{{ pc["camera"] }}</td>
-					  <td>{{ pc["touch"] }}</td>
-					  <td>{{ pc["issues"] }}</td>
-					  <td>{{ pc["gpu"] }}</td>
-					  <td>{{ pc["supplier"] }}</td>
-					  <td>{{ pc["timestamp"] }}</td>
-					  <td>{{ pc["QTY"] }}</td>
-					</tr>
-				  {% endfor %}
-				</tbody>
+                    </tbody>
+                </table>
+            </div>
 
-            </table>
-            </div> <!-- end table-responsive -->
-  </div> <!-- end table-wrapper -->
+            <!-- Pagination -->
+            <div class="pagination-wrapper">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% set base_query = request.args.to_dict() %}
+                        {% set base_query_no_page = base_query.copy() %}
+                        {% if 'page' in base_query_no_page %}
+                            {% set _ = base_query_no_page.pop('page') %}
+                        {% endif %}
 
+                        <!-- Previous Page -->
+                        {% if current_page > 1 %}
+                            {% set prev_query = base_query_no_page.copy() %}
+                            {% set _ = prev_query.update({'page': current_page - 1}) %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ prev_query | urlencode }}" aria-label="Previous">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
 
+                        <!-- Page Numbers -->
+                        {% for page_num in range(1, total_pages + 1) %}
+                            {% set page_query = base_query_no_page.copy() %}
+                            {% set _ = page_query.update({'page': page_num}) %}
+                            <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                <a class="page-link" href="?{{ page_query | urlencode }}">{{ page_num }}</a>
+                            </li>
+                        {% endfor %}
 
-<!-- Pagination -->
-<div class="card-footer">
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center mt-3 mb-0">
+                        <!-- Next Page -->
+                        {% if current_page < total_pages %}
+                            {% set next_query = base_query_no_page.copy() %}
+                            {% set _ = next_query.update({'page': current_page + 1}) %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ next_query | urlencode }}" aria-label="Next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </section>
+        {% else %}
+        <section class="results-section fade-in">
+            <div class="empty-state">
+                <i class="fas fa-search"></i>
+                <h3>No Results Found</h3>
+                <p>No laptops match your current filter criteria. Try adjusting your filters or <a href="/">reset them</a> to see all items.</p>
+            </div>
+        </section>
+        {% endif %}
+    </div>
 
-      {% set base_query = request.args.to_dict() %}
-      {% set base_query_no_page = base_query.copy() %}
-      {% if 'page' in base_query_no_page %}
-        {% set _ = base_query_no_page.pop('page') %}
-      {% endif %}
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Auto-submit on model change
+            const modelInput = document.querySelector("input[name='model']");
+            if (modelInput) {
+                modelInput.addEventListener("change", function() {
+                    this.form.submit();
+                });
+            }
 
-      {# Previous Page #}
-      {% if current_page > 1 %}
-        {% set prev_query = base_query_no_page.copy() %}
-        {% set _ = prev_query.update({'page': current_page - 1}) %}
-        <li class="page-item">
-          <a class="page-link" href="?{{ prev_query | urlencode }}" aria-label="Previous">&laquo;</a>
-        </li>
-      {% endif %}
+            // Add loading state to form submission
+            const filterForm = document.querySelector('form');
+            if (filterForm) {
+                filterForm.addEventListener('submit', function() {
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+                        submitBtn.disabled = true;
+                    }
+                    document.body.classList.add('loading');
+                });
+            }
 
-      {# Page Numbers #}
-      {% for page_num in range(1, total_pages + 1) %}
-        {% set page_query = base_query_no_page.copy() %}
-        {% set _ = page_query.update({'page': page_num}) %}
-        <li class="page-item {% if page_num == current_page %}active{% endif %}">
-          <a class="page-link" href="?{{ page_query | urlencode }}">{{ page_num }}</a>
-        </li>
-      {% endfor %}
+            // Initialize tooltips for status indicators
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
 
-      {# Next Page #}
-      {% if current_page < total_pages %}
-        {% set next_query = base_query_no_page.copy() %}
-        {% set _ = next_query.update({'page': current_page + 1}) %}
-        <li class="page-item">
-          <a class="page-link" href="?{{ next_query | urlencode }}" aria-label="Next">&raquo;</a>
-        </li>
-      {% endif %}
-
-    </ul>
-  </nav>
-</div>
-
-
-
-
-    {% else %}
-        <p class="text-muted">No records found for your filters.</p>
-    {% endif %}
-	
-	<!-- jQuery (required) -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-<!-- Bootstrap JS (required) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Bootstrap-Select JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
-
+            // Add smooth scrolling to table on mobile
+            const tableContainer = document.querySelector('.table-container');
+            if (tableContainer && window.innerWidth <= 768) {
+                tableContainer.style.scrollBehavior = 'smooth';
+            }
+        });
+    </script>
 </body>
 </html>

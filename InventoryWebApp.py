@@ -50,7 +50,7 @@ def get_filtered_data(filters, sort_by="timestamp", sort_order="desc"):
 
     allowed_sort_fields = [
         "manufacturer", "serial", "model", "cpu", "ram", "storage",
-        "resolution", "camera", "touch", "issues", "gpu", "supplier", "timestamp" , "QTY"
+        "resolution", "camera", "touch", "issues", "gpu", "Receiving Emp","supplier", "timestamp" , "QTY"
     ]
     if sort_by not in allowed_sort_fields:
         sort_by = "timestamp"
